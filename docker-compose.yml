@@ -1,0 +1,35 @@
+services:
+  backend:
+    image: gaelem/mpmt-backend:latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mpmt
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db
+
+  frontend:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      API_URL: http://backend:8081
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mpmt
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
