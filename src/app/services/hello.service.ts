@@ -8,6 +8,6 @@ export class HelloService {
   constructor(private http: HttpClient) {}
 
   getHello(): Observable<string> {
-    return this.http.get(`${API_URL}/hello`, { responseType: 'text' });
+    return this.http.get('/hello', { responseType: 'text' }); // ou '/api/hello' si tu routes par /api
   }
 }
